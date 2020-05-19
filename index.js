@@ -40,9 +40,24 @@ const courseSchema = new mongoose.Schema({
     ex:  both gte and lte - .find({price: {$gte: 10, $lte: 20}})
   */
 
+  /* Logical Operators
+  ex: wanna find either by author or published after.find() .or([{author: 'Mosh'}, {isPublished: true}])
+  ex: wanna find by author and published after.find() .and([{author: 'Mosh'}, {isPublished: true}])
+  */
+
+  /* Regex
+  Starts with - .find({ author: /^Mosh/ })
+  Ends with - .find({ author: /Hamedani$/i })
+  Contains - 👇find below
+  */
+  // Regex Contains .find({ author: /.*Mosh.*/i })
+
   async function getCourses() {
     const courses = await Course
-      .find({author: 'Mosh', isPublished: true})
+      // .find({author: 'Mosh', isPublished: true})
+      
+      
+      
       .limit(10)
       .sort({name: 'asc'}) // 'asc', 'desc', 'ascending', 'descending', 1, and -1
       .select({name: 1, tags: 1})
