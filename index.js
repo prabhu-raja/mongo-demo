@@ -27,6 +27,19 @@ const courseSchema = new mongoose.Schema({
     debugBasic(result);
   }
 
+  /* Comparison Query Operators
+    eq (equal)  ex: .find({price: 10})
+    ne (not equal)
+    gt (greater than)
+    gte (greater than or equal to) ex:  .find({price: {$gte: 10}})
+    lt (less than)
+    lte (less than or equal to)
+    in ex: .find({price: {$in: [10, 15, 20]}})
+    nin (not in)
+
+    ex:  both gte and lte - .find({price: {$gte: 10, $lte: 20}})
+  */
+
   async function getCourses() {
     const courses = await Course
       .find({author: 'Mosh', isPublished: true})
