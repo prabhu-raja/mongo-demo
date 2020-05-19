@@ -28,7 +28,7 @@ const courseSchema = new mongoose.Schema({
   }
 
   async function getCourses() {
-    const courses = await Course.find();
+    const courses = await Course.find({author: 'Mosh', isPublished: true});
     console.log(courses);
   }
 
