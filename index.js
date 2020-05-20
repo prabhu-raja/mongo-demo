@@ -57,8 +57,8 @@ const courseSchema = new mongoose.Schema({
       .find({author: 'Mosh', isPublished: true})
       .limit(10)
       .sort({name: 'asc'}) // 'asc', 'desc', 'ascending', 'descending', 1, and -1
-      .count()
-      // .select({name: 1, tags: 1})
+      // .count()
+      .select({name: 1, tags: 1})
     console.log(courses);
   }
 
