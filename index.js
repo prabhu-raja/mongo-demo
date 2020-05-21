@@ -11,17 +11,19 @@ const courseSchema = new mongoose.Schema({
   author: String,
   tags: [ String],
   date: { type: Date, default: Date.now },
-  isPublished: Boolean
+  isPublished: Boolean,
+  price: Number
 });
 
 const Course = mongoose.model('Course', courseSchema);
 
 async function createCourse() {
   const course = new Course({
-    // name: 'Scss Course',
-    author: 'Renji',
-    tags: ['frontend'],
-    isPublished: false
+    name: 'Angular Course',
+    author: 'Todd',
+    tags: ['frontend', 'angular', 'typescript'],
+    isPublished: true,
+    price: 49
   });
   try {
     debugBasic('11');
@@ -80,6 +82,7 @@ async function updateByFindAndUpdate(id) {
 
 async function removeCourse(id) {
   const result = await Course.deleteOne({_id: id});
+  // const result = await Course.deleteMany({isPublished: true});
   debugBasic(result);
 }
 // removeCourse('5ec65bf24f4a3a13138b0df5');
