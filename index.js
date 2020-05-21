@@ -45,7 +45,7 @@ const courseSchema = new mongoose.Schema({
     course.isPublished = true;
     course.author = 'Author Jack';
     const result = await course.save();
-    debugBasic(result);
+    debugBasic(result); // freturn the doc which got updated
   }
   // updateByQueryFirst('5ec330aa4fe68134c437ecfa');
 
@@ -56,9 +56,20 @@ const courseSchema = new mongoose.Schema({
         author: 'Raja Vasanth'
       }
     });
-    debugBasic(result);
+    debugBasic(result); // { n: 1, nModified: 1, ok: 1 } Here it wont return the doc.
   }
-  updateByUpdateFirst('5ec330aa4fe68134c437ecfa');
+  // updateByUpdateFirst('5ec330aa4fe68134c437ecfa');
+
+  async function updateByFindAndUpdate(id) {
+    const course = await Course.findByIdAndUpdate(id, {
+      $set: {
+        isPublished: true,
+        author: 'Jack Sparrow'
+      }
+    }, {new: true});
+    debugBasic(course); // return doc.
+  }
+  updateByFindAndUpdate('5ec330aa4fe68134c437ecfa');
 
 
   /*Comparison Query Operators
