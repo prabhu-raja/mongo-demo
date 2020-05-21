@@ -23,8 +23,12 @@ async function createCourse() {
     tags: ['frontend'],
     isPublished: false
   });
-  const result = await course.save();
-  debugBasic(result);
+  try {
+    const result = await course.save();
+    debugBasic(result);
+  } catch (err) {
+    debugBasic(err.message);
+  }
 }
 createCourse();
 
