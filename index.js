@@ -18,10 +18,10 @@ const courseSchema = new mongoose.Schema({
 
   async function createCourse() {
     const course = new Course({
-      name: 'Angular Course',
-      author: 'Todd',
-      tags: ['angular', 'typescript', 'frontend'],
-      isPublished: true
+      name: 'Scss Course',
+      author: 'Renji',
+      tags: ['frontend'],
+      isPublished: false
     });
     const result = await course.save();
     debugBasic(result);
@@ -69,9 +69,13 @@ const courseSchema = new mongoose.Schema({
     }, {new: true});
     debugBasic(course); // return doc.
   }
-  updateByFindAndUpdate('5ec330aa4fe68134c437ecfa');
+  // updateByFindAndUpdate('5ec330aa4fe68134c437ecfa');
 
-
+  async function removeCourse(id) {
+    const result = await Course.deleteOne({_id: id});
+    debugBasic(result);
+  }
+  removeCourse('5ec65bf24f4a3a13138b0df5');
   /*Comparison Query Operators
     eq (equal)  ex: .find({price: 10})
     ne (not equal)
