@@ -7,75 +7,77 @@ mongoose.connect('mongodb://localhost/playground')
   .catch(err => debugBasic('Error in connecting 🍃', err));
 
 const courseSchema = new mongoose.Schema({
-    name: String,
-    author: String,
-    tags: [ String],
-    date: { type: Date, default: Date.now },
-    isPublished: Boolean
+  name: String,
+  author: String,
+  tags: [ String],
+  date: { type: Date, default: Date.now },
+  isPublished: Boolean
+});
+
+const Course = mongoose.model('Course', courseSchema);
+
+async function createCourse() {
+  const course = new Course({
+    name: 'Scss Course',
+    author: 'Renji',
+    tags: ['frontend'],
+    isPublished: false
   });
+  const result = await course.save();
+  debugBasic(result);
+}
+createCourse();
 
-  const Course = mongoose.model('Course', courseSchema);
+async function getCourses() {
+  const courses = await Course
+    .find({author: 'Mosh', isPublished: true})
+    .limit(10)
+    .sort({name: 'asc'}) // 'asc', 'desc', 'ascending', 'descending', 1, and -1
+    // .count()
+    .select({name: 1, tags: 1})
+  console.log(courses);
+}
+// getCourses();
 
-  async function createCourse() {
-    const course = new Course({
-      name: 'Scss Course',
-      author: 'Renji',
-      tags: ['frontend'],
-      isPublished: false
-    });
-    const result = await course.save();
-    debugBasic(result);
-  }
-  // createCourse();
+async function updateByQueryFirst(id) {
+  const course = await Course.findById(id);
+  if(!course) { return; }
+  course.isPublished = true;
+  course.author = 'Author Jack';
+  const result = await course.save();
+  debugBasic(result); // freturn the doc which got updated
+}
+// updateByQueryFirst('5ec330aa4fe68134c437ecfa');
 
-  async function getCourses() {
-    const courses = await Course
-      .find({author: 'Mosh', isPublished: true})
-      .limit(10)
-      .sort({name: 'asc'}) // 'asc', 'desc', 'ascending', 'descending', 1, and -1
-      // .count()
-      .select({name: 1, tags: 1})
-    console.log(courses);
-  }
-  // getCourses();
+async function updateByUpdateFirst(id) {
+  const result = await Course.update({_id: id}, {
+    $set: {
+      isPublished: false,
+      author: 'Raja Vasanth'
+    }
+  });
+  debugBasic(result); // { n: 1, nModified: 1, ok: 1 } Here it wont return the doc.
+}
+// updateByUpdateFirst('5ec330aa4fe68134c437ecfa');
 
-  async function updateByQueryFirst(id) {
-    const course = await Course.findById(id);
-    if(!course) { return; }
-    course.isPublished = true;
-    course.author = 'Author Jack';
-    const result = await course.save();
-    debugBasic(result); // freturn the doc which got updated
-  }
-  // updateByQueryFirst('5ec330aa4fe68134c437ecfa');
+async function updateByFindAndUpdate(id) {
+  const course = await Course.findByIdAndUpdate(id, {
+    $set: {
+      isPublished: true,
+      author: 'Jack Sparrow'
+    }
+  }, {new: true});
+  debugBasic(course); // return doc.
+}
+// updateByFindAndUpdate('5ec330aa4fe68134c437ecfa');
 
-  async function updateByUpdateFirst(id) {
-    const result = await Course.update({_id: id}, {
-      $set: {
-        isPublished: false,
-        author: 'Raja Vasanth'
-      }
-    });
-    debugBasic(result); // { n: 1, nModified: 1, ok: 1 } Here it wont return the doc.
-  }
-  // updateByUpdateFirst('5ec330aa4fe68134c437ecfa');
+async function removeCourse(id) {
+  const result = await Course.deleteOne({_id: id});
+  debugBasic(result);
+}
+// removeCourse('5ec65bf24f4a3a13138b0df5');
 
-  async function updateByFindAndUpdate(id) {
-    const course = await Course.findByIdAndUpdate(id, {
-      $set: {
-        isPublished: true,
-        author: 'Jack Sparrow'
-      }
-    }, {new: true});
-    debugBasic(course); // return doc.
-  }
-  // updateByFindAndUpdate('5ec330aa4fe68134c437ecfa');
 
-  async function removeCourse(id) {
-    const result = await Course.deleteOne({_id: id});
-    debugBasic(result);
-  }
-  removeCourse('5ec65bf24f4a3a13138b0df5');
   /*Comparison Query Operators
     eq (equal)  ex: .find({price: 10})
     ne (not equal)
