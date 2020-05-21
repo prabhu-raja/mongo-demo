@@ -24,6 +24,9 @@ async function createCourse() {
     isPublished: false
   });
   try {
+    debugBasic('11');
+    await course.validate();
+    debugBasic('22');
     const result = await course.save();
     debugBasic(result);
   } catch (err) {
