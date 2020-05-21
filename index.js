@@ -62,6 +62,22 @@ const courseSchema = new mongoose.Schema({
     console.log(courses);
   }
 
-  getCourses();
+  async function updateCourse(id) {
+    const course = await Course.findById(id);
+    if(!course) {
+      return;
+    }
+    course.isPublished = true;
+    course.author = 'Another Author';
+    // course.set({
+    //   isPublished: true,
+    //   author: 'Another Author'
+    // });
+    course.save();
+  }
+
+  updateCourse('5ec330aa4fe68134c437ecfa');
+
+  // getCourses();
 
   // createCourse();
