@@ -47,7 +47,19 @@ const courseSchema = new mongoose.Schema({
     const result = await course.save();
     debugBasic(result);
   }
-  updateByQueryFirst('5ec330aa4fe68134c437ecfa');
+  // updateByQueryFirst('5ec330aa4fe68134c437ecfa');
+
+  async function updateByUpdateFirst(id) {
+    const result = await Course.update({_id: id}, {
+      $set: {
+        isPublished: false,
+        author: 'Raja Vasanth'
+      }
+    });
+    debugBasic(result);
+  }
+  updateByUpdateFirst('5ec330aa4fe68134c437ecfa');
+
 
   /*Comparison Query Operators
     eq (equal)  ex: .find({price: 10})
