@@ -26,8 +26,30 @@ const courseSchema = new mongoose.Schema({
     const result = await course.save();
     debugBasic(result);
   }
+  // createCourse();
 
-  /* Comparison Query Operators
+  async function getCourses() {
+    const courses = await Course
+      .find({author: 'Mosh', isPublished: true})
+      .limit(10)
+      .sort({name: 'asc'}) // 'asc', 'desc', 'ascending', 'descending', 1, and -1
+      // .count()
+      .select({name: 1, tags: 1})
+    console.log(courses);
+  }
+  // getCourses();
+
+  async function updateByQueryFirst(id) {
+    const course = await Course.findById(id);
+    if(!course) { return; }
+    course.isPublished = true;
+    course.author = 'Author Jack';
+    const result = await course.save();
+    debugBasic(result);
+  }
+  updateByQueryFirst('5ec330aa4fe68134c437ecfa');
+
+  /*Comparison Query Operators
     eq (equal)  ex: .find({price: 10})
     ne (not equal)
     gt (greater than)
@@ -41,43 +63,16 @@ const courseSchema = new mongoose.Schema({
   */
 
   /* Logical Operators
-  ex: wanna find either by author or published after.find() .or([{author: 'Mosh'}, {isPublished: true}])
-  ex: wanna find by author and published after.find() .and([{author: 'Mosh'}, {isPublished: true}])
+    ex: wanna find either by author or published after.find() .or([{author: 'Mosh'}, {isPublished: true}])
+    ex: wanna find by author and published after.find() .and([{author: 'Mosh'}, {isPublished: true}])
   */
 
   /* Regex
-  Starts with - .find({ author: /^Mosh/ })
-  Ends with - .find({ author: /Hamedani$/i })
-  Contains - 👇find below
+    Starts with - .find({ author: /^Mosh/ })
+    Ends with - .find({ author: /Hamedani$/i })
+    Contains - 👇find below
   */
-  // Regex Contains .find({ author: /.*Mosh.*/i })
+  //  Regex Contains .find({ author: /.*Mosh.*/i })
 
-  async function getCourses() {
-    const courses = await Course
-      .find({author: 'Mosh', isPublished: true})
-      .limit(10)
-      .sort({name: 'asc'}) // 'asc', 'desc', 'ascending', 'descending', 1, and -1
-      // .count()
-      .select({name: 1, tags: 1})
-    console.log(courses);
-  }
 
-  async function updateCourse(id) {
-    const course = await Course.findById(id);
-    if(!course) {
-      return;
-    }
-    course.isPublished = true;
-    course.author = 'Another Author';
-    // course.set({
-    //   isPublished: true,
-    //   author: 'Another Author'
-    // });
-    course.save();
-  }
-
-  updateCourse('5ec330aa4fe68134c437ecfa');
-
-  // getCourses();
-
-  // createCourse();
+  
