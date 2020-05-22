@@ -7,23 +7,42 @@ mongoose.connect('mongodb://localhost/playground')
   .catch(err => debugBasic('Error in connecting 🍃', err));
 
 const courseSchema = new mongoose.Schema({
-  name: { type: String, required: true},
+  name: { 
+    type: String, 
+    required: true,
+    minlength: 5,
+    maxlength: 25,
+    // match: /pattern/
+  },
+  category: {
+    type: String,
+    required: true,
+    enum: ['web', 'mobile', 'network']
+  },
   author: String,
   tags: [ String],
   date: { type: Date, default: Date.now },
   isPublished: Boolean,
-  price: Number
+  price: {
+    type: Number,
+    min: 5,
+    max: 999,
+    required: function() {
+      return this.isPublished;
+    }
+  }
 });
 
 const Course = mongoose.model('Course', courseSchema);
 
 async function createCourse() {
   const course = new Course({
-    name: 'Angular Course',
-    author: 'Todd',
-    tags: ['frontend', 'angular', 'typescript'],
+    name: 'PhotoshopCourse',
+    category: 'web',
+    author: 'Youtube',
+    tags: ['design'],
     isPublished: true,
-    price: 49
+    price: 69
   });
   try {
     debugBasic('11');
