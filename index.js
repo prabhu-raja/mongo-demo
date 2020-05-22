@@ -23,8 +23,12 @@ const courseSchema = new mongoose.Schema({
   tags: {
     type: Array,
     validate: {
-      validator: (val) => {
-        return val && val.length > 0;
+      isAsync: true,
+      validator: (val, callback) => {
+        setTimeout(() => {
+          const result =  val && val.length > 0;
+          callback(result);
+        }, 2000);
       },
       message: 'A Course must have atleast 1 tag'
     }
@@ -45,12 +49,12 @@ const Course = mongoose.model('Course', courseSchema);
 
 async function createCourse() {
   const course = new Course({
-    name: 'Office Course',
+    name: 'Some Course',
     category: 'web',
     author: 'Youtube',
-    tags: ['office'],
+    tags: ['misc'],
     isPublished: true,
-    price: 9
+    price: 6
   });
   try {
     debugBasic('11');
