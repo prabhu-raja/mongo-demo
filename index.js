@@ -50,11 +50,11 @@ const Course = mongoose.model('Course', courseSchema);
 async function createCourse() {
   const course = new Course({
     name: 'Some Course',
-    category: 'web',
+    category: 'oolala',
     author: 'Youtube',
-    tags: ['misc'],
+    tags: [],
     isPublished: true,
-    price: 6
+    price: 0
   });
   try {
     debugBasic('11');
@@ -63,7 +63,11 @@ async function createCourse() {
     const result = await course.save();
     debugBasic(result);
   } catch (err) {
-    debugBasic(err.message);
+    for (const field in err.errors) {
+      if (err.errors.hasOwnProperty(field)) {
+        debugBasic('🤬', err.errors[field].message);
+      }
+    }
   }
 }
 createCourse();
