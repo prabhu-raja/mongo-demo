@@ -49,12 +49,12 @@ const Course = mongoose.model('Course', courseSchema);
 
 async function createCourse() {
   const course = new Course({
-    name: 'Some Course',
-    category: 'oolala',
+    name: 'SCSS Crash Course',
+    category: 'web',
     author: 'Youtube',
-    tags: [],
+    tags: ['frontend', 'styles'],
     isPublished: true,
-    price: 0
+    price: 5.99
   });
   try {
     debugBasic('11');
